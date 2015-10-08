@@ -24,6 +24,7 @@
 package gridexplorer;
 
 /**
+ * Runs the game.
  *
  * @author Christopher Wells
  */

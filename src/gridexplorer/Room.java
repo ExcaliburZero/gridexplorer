@@ -24,6 +24,7 @@
 package gridexplorer;
 
 /**
+ * Handles rooms used by the game.
  *
  * @author Christopher Wells
  */
