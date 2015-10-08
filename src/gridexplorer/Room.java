@@ -37,11 +37,13 @@ public class Room {
 	 * The constructor method to create the room. Creates the grid based on the
 	 * given inputs for the number of rows and columns for the room.
 	 * 
-	 * @param c The number of columns that the room has
 	 * @param r The number of rows that the room has
+	 * @param c The number of columns that the room has
 	 */
-	public Room(int c, int r) {
-		grid = new int[rows][columns];
+	public Room(int r, int c) {
+		rows = r;
+		columns = c;
+		grid = new int[r][c];
 	}
 	
 	/**

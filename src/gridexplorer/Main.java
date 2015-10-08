@@ -31,10 +31,15 @@ package gridexplorer;
 public class Main {
 
 	/**
-	 * @param args the command line arguments
+	 * The method that is run when the program starts.
+	 * 
+	 * @param args The command line arguments
 	 */
 	public static void main(String[] args) {
-		// TODO code application logic here
+		// Create a test room
+		Room testRoom = new Room(10, 10);
+		System.out.println("Rows: " + testRoom.getRows());
+		System.out.println("Columns: " + testRoom.getColumns());
 	}
 
 }
