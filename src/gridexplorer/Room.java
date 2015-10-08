@@ -27,6 +27,37 @@ package gridexplorer;
  *
  * @author Christopher Wells
  */
-public class room {
+public class Room {
+	private int [][] grid;	// A grid of the objects that are within the room
+	private int rows;	// The total number of rows that the room has
+	private int columns;	// The total number of columns that the room has
 	
+	/**
+	 * The constructor method to create the room. Creates the grid based on the
+	 * given inputs for the number of rows and columns for the room.
+	 * 
+	 * @param c The number of columns that the room has
+	 * @param r The number of rows that the room has
+	 */
+	public Room(int c, int r) {
+		grid = new int[rows][columns];
+	}
+	
+	/**
+	 * The method used to get the number of rows that the room has.
+	 * 
+	 * @return The number of rows the room has
+	 */
+	public int getRows() {
+		return rows;
+	}
+	
+	/**
+	 * The method used to get the number of columns that the room has.
+	 * 
+	 * @return The number of columns the room has
+	 */
+	public int getColumns() {
+		return columns;
+	}
 }
