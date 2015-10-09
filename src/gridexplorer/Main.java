@@ -40,6 +40,7 @@ public class Main {
 		Room testRoom = new Room(10, 10);
 		System.out.println("Rows: " + testRoom.getRows());
 		System.out.println("Columns: " + testRoom.getColumns());
+		testRoom.display();
 	}
 
 }

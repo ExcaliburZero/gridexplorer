@@ -63,4 +63,47 @@ public class Room {
 	public int getColumns() {
 		return columns;
 	}
+	
+	/**
+	 * The method used to get the integer identifier of the object at a given
+	 * point.
+	 * 
+	 * @param r The row of the object
+	 * @param c The column of the object
+	 * @return The integer identifier of the object at the specified point
+	 */
+	public int objectAt(int r, int c) {
+		return grid[r][c];
+	}
+	
+	/**
+	 * The method used to convert and integer identifier into its corresponding
+	 * character.
+	 * 
+	 * @param indentifier The integer identifier to be converted to a character
+	 * @return The character specified by the integer identifier
+	 */
+	private char identifyInt(int indentifier) {
+		switch (indentifier) {
+			case 0:	// Blank spaces
+				return ' ';
+			case 1:	// Walls
+				return '#';
+			case 2:	// Player
+				return '@';
+		}
+		return '?';
+	}
+	
+	/**
+	 * The method used to display the contents of the grid.
+	 */
+	public void display() {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				System.out.print(identifyInt(objectAt(i,j)));
+			}
+			System.out.println("");
+		}
+	}
 }
