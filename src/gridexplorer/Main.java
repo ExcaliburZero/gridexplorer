@@ -23,6 +23,8 @@
  */
 package gridexplorer;
 
+import java.util.Scanner;
+
 /**
  * Runs the game.
  *
@@ -36,6 +38,8 @@ public class Main {
 	 * @param args The command line arguments
 	 */
 	public static void main(String[] args) {
+		Scanner kb = new Scanner(System.in);	// Scanner to take in input from the keyboard
+		
 		// Create a test room
 		Room testRoom = new Room(10, 10, 5, 5);
 		
@@ -51,8 +55,35 @@ public class Main {
 		//testRoom.display();
 		
 		// Try to move the player off of the grid
-		testRoom.movePlayer("down", 4);
+		testRoom.movePlayer("left", 1);
 		testRoom.display();
+		
+		int test = kb.nextInt();
+		
+		clearScreen();
+		testRoom.movePlayer("left", 1);
+		testRoom.display();
+		
+	}
+	
+	/**
+	 * A method used to clear the terminal screen.
+	 */
+	public static void clearScreen() {
+//		final String operatingSystem = System.getProperty("os.name");
+//
+//		try {
+//			if (operatingSystem.contains("Windows")) {
+//				Runtime.getRuntime().exec("cls");
+//			}
+//			else {
+//				Runtime.getRuntime().exec("clear");
+//			}
+//		}
+//		catch (IOException ex) {
+//			
+//		}
+		System.out.println("\f");
 	}
 
 }

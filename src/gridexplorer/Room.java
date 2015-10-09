@@ -80,7 +80,7 @@ public class Room {
 	/**
 	 * The method used to determine whether a specific position is valid in the
 	 * room or not.
-	 * 
+	 *
 	 * @param r The row of the position
 	 * @param c The column of the position
 	 * @return Whether or not the position is valid
@@ -106,8 +106,7 @@ public class Room {
 	public int objectAt(int r, int c) {
 		if (hasPos(r, c)) {
 			return grid[r][c];
-		}
-		else {
+		} else {
 			return 999;
 		}
 	}
