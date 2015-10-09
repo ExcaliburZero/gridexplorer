@@ -78,6 +78,24 @@ public class Room {
 	}
 
 	/**
+	 * The method used to determine whether a specific position is valid in the
+	 * room or not.
+	 * 
+	 * @param r The row of the position
+	 * @param c The column of the position
+	 * @return Whether or not the position is valid
+	 */
+	public boolean hasPos(int r, int c) {
+		if (r < 0 || r >= rows) {	// Check if the row is valid
+			return false;
+		} else if (c < 0 || c >= columns) {	// Check if the column is valid
+			return false;
+		} else {	// If both are valid, then the position is valid
+			return true;
+		}
+	}
+
+	/**
 	 * The method used to get the integer identifier of the object at a given
 	 * point.
 	 *
@@ -86,7 +104,12 @@ public class Room {
 	 * @return The integer identifier of the object at the specified point
 	 */
 	public int objectAt(int r, int c) {
-		return grid[r][c];
+		if (hasPos(r, c)) {
+			return grid[r][c];
+		}
+		else {
+			return 999;
+		}
 	}
 
 	/**
@@ -130,7 +153,9 @@ public class Room {
 	 * @param id The integer identifier of the object to be added
 	 */
 	private void addObject(int r, int c, int id) {
-		grid[r][c] = id;
+		if (hasPos(r, c)) {
+			grid[r][c] = id;
+		}
 	}
 
 	/**
@@ -140,7 +165,9 @@ public class Room {
 	 * @param c The column of the position
 	 */
 	private void removeObject(int r, int c) {
-		grid[r][c] = 0;
+		if (hasPos(r, c)) {
+			grid[r][c] = 0;
+		}
 	}
 
 	/**
@@ -159,10 +186,10 @@ public class Room {
 		// Add the player at the spwan position
 		addObject(spawnRow, spawnColumn, 2);
 	}
-	
+
 	/**
 	 * The method used to move an object from one position to another.
-	 * 
+	 *
 	 * @param or The old row of the object
 	 * @param oc The old column of the object
 	 * @param nr The new row of the object
@@ -172,16 +199,16 @@ public class Room {
 	private void moveObject(int or, int oc, int nr, int nc, int id) {
 		// Check to make sure that the object being moved is actually at the old
 		// position
-		if (objectAt(or, oc) == id){
+		if (objectAt(or, oc) == id) {
 			// Remove the object from its old position and add it to its new position
 			removeObject(or, oc);
 			addObject(nr, nc, id);
 		}
 	}
-	
+
 	/**
 	 * The method used to move the player.
-	 * 
+	 *
 	 * @param d The direction to move the player in
 	 * @param a The amount of steps to move the player
 	 */
@@ -200,9 +227,10 @@ public class Room {
 		} else if (d.equals("right")) {
 			newColumn += a;
 		}
-		
-		// Test to make sure that the new position is empty
-		if (objectAt(newRow, newColumn) == 0) {
+
+		// Test to make sure that the new position is empty and that the new
+		// poistion is valid
+		if (objectAt(newRow, newColumn) == 0 && hasPos(newRow, newColumn)) {
 			moveObject(playerRow, playerColumn, newRow, newColumn, 2);
 		}
 	}

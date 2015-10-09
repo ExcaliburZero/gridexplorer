@@ -47,7 +47,11 @@ public class Main {
 		testRoom.display();
 		
 		// Move the player and then display the test room
-		testRoom.movePlayer("left", 2);
+		//testRoom.movePlayer("left", 2);
+		//testRoom.display();
+		
+		// Try to move the player off of the grid
+		testRoom.movePlayer("down", 4);
 		testRoom.display();
 	}
 
