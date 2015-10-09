@@ -32,6 +32,12 @@ public class Room {
 	private int [][] grid;	// A grid of the objects that are within the room
 	private int rows;	// The total number of rows that the room has
 	private int columns;	// The total number of columns that the room has
+	private int spawnRow;	// The row of the player spawn point
+	private int spawnColumn;	// The column of the player spawn point
+	private int playerRow;	// The current row of the player
+	private int playerColumn;	// The current column of the player
+	
+	private boolean spawned;	// Whether or not the player has been spawned yet
 	
 	/**
 	 * The constructor method to create the room. Creates the grid based on the
@@ -39,11 +45,17 @@ public class Room {
 	 * 
 	 * @param r The number of rows that the room has
 	 * @param c The number of columns that the room has
+	 * @param sr The row of the player spawn point
+	 * @param sc The column of the player spawn point
 	 */
-	public Room(int r, int c) {
+	public Room(int r, int c, int sr, int sc) {
 		rows = r;
 		columns = c;
+		spawnRow = sr;
+		spawnColumn = sc;
 		grid = new int[r][c];
+		spawned = false;
+		spawnPlayer();
 	}
 	
 	/**
@@ -101,9 +113,45 @@ public class Room {
 	public void display() {
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
+				// Print out each entry of the grid
 				System.out.print(identifyInt(objectAt(i,j)));
 			}
+			// Handle the rows of the grid
 			System.out.println("");
 		}
+	}
+	
+	/**
+	 * The method used to add an object to a specified point on the grid.
+	 * 
+	 * @param r The row of the position
+	 * @param c The column of the position
+	 * @param id The integer identifier of the object to be added
+	 */
+	private void addObject(int r, int c, int id) {
+		grid[r][c] = id;
+	}
+	
+	/**
+	 * The method used to remove an object from a specified point on the grid.
+	 * 
+	 * @param r The row of the position
+	 * @param c The column of the position 
+	 */
+	private void removeObject(int r, int c) {
+		grid[r][c] = 0;
+	}
+	
+	/**
+	 * The method use to spawn or re-spawn the player at the spawn point.
+	 */
+	public void spawnPlayer() {
+		// If the player is already in the room then remove it
+		if(spawned) {
+			removeObject(playerRow, playerColumn);
+		}
+		
+		// Add the player at the spwan position
+		addObject(spawnRow, spawnColumn, 2);
 	}
 }

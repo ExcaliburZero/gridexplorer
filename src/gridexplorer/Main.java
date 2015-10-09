@@ -37,7 +37,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// Create a test room
-		Room testRoom = new Room(10, 10);
+		Room testRoom = new Room(10, 10, 5, 5);
 		System.out.println("Rows: " + testRoom.getRows());
 		System.out.println("Columns: " + testRoom.getColumns());
 		testRoom.display();
