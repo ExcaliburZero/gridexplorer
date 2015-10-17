@@ -41,8 +41,8 @@ public class Room {
 	private int spawnColumn;	// The column of the player spawn point
 	private int playerRow;	// The current row of the player
 	private int playerColumn;	// The current column of the player
-
 	private boolean spawned;	// Whether or not the player has been spawned yet
+	private Game curGame;	// The current instance of the game that is being played
 
 	/**
 	 * The constructor method to create the room. Creates the grid based on the
@@ -52,12 +52,14 @@ public class Room {
 	 * @param c The number of columns that the room has
 	 * @param sr The row of the player spawn point
 	 * @param sc The column of the player spawn point
+	 * @param g The current instance of the game that is being played
 	 */
-	public Room(int r, int c, int sr, int sc) {
+	public Room(int r, int c, int sr, int sc, Game g) {
 		rows = r;
 		columns = c;
 		spawnRow = sr;
 		spawnColumn = sc;
+		curGame = g;
 		grid = new int[r][c];
 		spawned = false;
 		spawnPlayer();
@@ -70,47 +72,51 @@ public class Room {
 	 * the ".txt" file type.
 	 *
 	 * @param roomName The name of the room file
-	 * @throws java.io.FileNotFoundException If the room name given does not
-	 * have a corresponding existing file
+	 * @param g The current instance of the game that is being played
 	 */
-	public Room(String roomName) throws FileNotFoundException {
-		File roomFile = new File("resources/rooms/" + roomName + ".txt");
-		Scanner findSize = new Scanner(roomFile);
-		Scanner rm = new Scanner(roomFile);
-		String line;
-		columns = 0;
+	public Room(String roomName, Game g) {
+		try {
+			File roomFile = new File("resources/rooms/" + roomName + ".txt");
+			Scanner findSize = new Scanner(roomFile);
+			Scanner rm = new Scanner(roomFile);
+			String line;
+			curGame = g;
+			columns = 0;
 
-		// Find out how many rows and columns the input file has
-		line = findSize.nextLine();
-		rows = line.length();
-		columns++;
-		while (findSize.hasNextLine()) {
+			// Find out how many rows and columns the input file has
 			line = findSize.nextLine();
+			rows = line.length();
 			columns++;
-		}
-
-		// Create the grid and fill it with the file contents
-		grid = new int[rows][columns];
-		int i = 0;
-		while (rm.hasNextLine()) {
-			line = rm.nextLine();
-			for (int j = 0; j < line.length(); j++) {
-				// Find player spawn position
-				if (line.charAt(j) == '@') {
-					spawnRow = j;
-					spawnColumn = i;
-				} else {
-					grid[i][j] = identifyChar(line.charAt(j));
-				}
+			while (findSize.hasNextLine()) {
+				line = findSize.nextLine();
+				columns++;
 			}
-			i++;
-		}
 
-		// Check to make sure that there is a spawn position
-		if (spawnRow == -1) {
-			System.out.println("No spawn position in the room file.");
-		} else {
-			spawnPlayer();
+			// Create the grid and fill it with the file contents
+			grid = new int[rows][columns];
+			int i = 0;
+			while (rm.hasNextLine()) {
+				line = rm.nextLine();
+				for (int j = 0; j < line.length(); j++) {
+					// Find player spawn position
+					if (line.charAt(j) == '@') {
+						spawnRow = i;
+						spawnColumn = j;
+					} else {
+						grid[i][j] = identifyChar(line.charAt(j));
+					}
+				}
+				i++;
+			}
+
+			// Check to make sure that there is a spawn position
+			if (spawnRow == -1) {
+				System.out.println("No spawn position in the room file.");
+			} else {
+				spawnPlayer();
+			}
+		} catch (Exception FileNotFoundException) {
+			System.out.println("Invalid room file '" + roomName + "'");
 		}
 	}
 
@@ -181,6 +187,8 @@ public class Room {
 				return '#';
 			case 2:	// Player
 				return '@';
+			case 3:	// Portal
+				return '*';
 			default:
 				return '?';
 		}
@@ -201,6 +209,8 @@ public class Room {
 				return 1;
 			case '@':
 				return 2;
+			case '*':
+				return 3;
 			default:
 				return 999;
 		}
@@ -319,16 +329,22 @@ public class Room {
 
 		// Test to make sure that the new position is empty and that the new
 		// poistion is valid
-		if (objectAt(newRow, newColumn) == 0 && hasPos(newRow, newColumn)) {
-			moveObject(playerRow, playerColumn, newRow, newColumn, 2);
-			playerRow = newRow;
-			playerColumn = newColumn;
-		} else {	// Tell the user why the play could not be moved
-			if (!(hasPos(newRow, newColumn))) {
-				System.out.println("New position " + formatPosition(newRow, newColumn) + " does not exist.");
-			} else if (!(objectAt(newRow, newColumn) == 0)) {
-				System.out.println("New position " + formatPosition(newRow, newColumn) + " is not empty: " + identifyInt(objectAt(newRow, newColumn)));
+		if (hasPos(newRow, newColumn)) {
+			switch (objectAt(newRow, newColumn)) {
+				case 0:
+					moveObject(playerRow, playerColumn, newRow, newColumn, 2);
+					playerRow = newRow;
+					playerColumn = newColumn;
+					break;
+				case 3:
+					curGame.nextRoom();
+					break;
+				default:
+					System.out.println("New position " + formatPosition(newRow, newColumn) + " is not empty: " + identifyInt(objectAt(newRow, newColumn)));
+					break;
 			}
+		} else {
+			System.out.println("New position " + formatPosition(newRow, newColumn) + " does not exist.");
 		}
 	}
 

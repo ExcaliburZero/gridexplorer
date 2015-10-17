@@ -23,7 +23,6 @@
  */
 package gridexplorer;
 
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -36,6 +35,7 @@ public class Game {
 	private Scanner kb = new Scanner(System.in);
 	private String moveDirection;
 	private String[] roomList;
+	private int roomIndex;
 	private Room curRoom;
 	private boolean playing;
 
@@ -45,12 +45,11 @@ public class Game {
 	 *
 	 * @param rooms A string array of the rooms used in the game in the order
 	 * they will be used in
-	 * @throws java.io.FileNotFoundException If the first room in the room array
-	 * does not have an existing corresponding file
 	 */
-	public Game(String[] rooms) throws FileNotFoundException {
+	public Game(String[] rooms) {
 		roomList = rooms;
-		curRoom = new Room(roomList[0]);
+		roomIndex = 0;
+		curRoom = new Room(roomList[roomIndex], this);
 		playing = true;
 	}
 
@@ -98,5 +97,29 @@ public class Game {
 		curRoom.display();
 		int[] playerPos = curRoom.getPlayerPos();
 		System.out.println("Pos: " + curRoom.formatPosition(playerPos));
+	}
+
+	/**
+	 * The method used to move the game to the next room.
+	 */
+	public void nextRoom() {
+		roomIndex += 1;
+
+		// Check to make sure that there is a next room
+		if (roomIndex < roomList.length) {
+			curRoom = new Room(roomList[roomIndex], this);
+		} else {
+			// If there is no next room, then the player has won the game
+			winGame();
+		}
+	}
+
+	/**
+	 * The method used end the game, and inform the player that they have
+	 * successfully competed the game.
+	 */
+	private void winGame() {
+		System.out.println("Congratulations! You won!");
+		playing = false;
 	}
 }

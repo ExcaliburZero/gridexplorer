@@ -23,8 +23,6 @@
  */
 package gridexplorer;
 
-import java.io.FileNotFoundException;
-
 /**
  * Runs the game.
  *
@@ -34,39 +32,29 @@ public class Main {
 
 	/**
 	 * The method that is run when the program starts.
-	 * 
+	 *
 	 * @param args The command line arguments
 	 */
-	public static void main(String[] args) throws FileNotFoundException {
-		// Create a test room
-		//Room testRoom = new Room(10, 10, 5, 5);
-		
-		// Display the size of the test room
-		//System.out.println("Rows: " + testRoom.getRows());
-		//System.out.println("Columns: " + testRoom.getColumns());
-		
-		// Display the test room
-		//testRoom.display();
-		
-		// Move the player and then display the test room
-		//testRoom.movePlayer("left", 2);
-		//testRoom.display();
-		
-		// Try to move the player off of the grid
-		//testRoom.movePlayer("down", 4);
-		//testRoom.display();
-		String [] roomList = {
+	public static void main(String[] args) {
+
+		// Create a list of rooms that the game will use
+		String[] roomList = {
 			"room1",
 			"room2",
 			"special"
 		};
-		
+
+		// Start the game
 		Game theGame = new Game(roomList);
 		theGame.displayRoom();
-		
-		while(theGame.isPlaying()) {
+
+		// Allow the user to move until they finish all of the rooms
+		while (theGame.isPlaying()) {
 			theGame.promptMove();
-			theGame.displayRoom();
+			// Display the room unless the user finishes the game
+			if (theGame.isPlaying()) {
+				theGame.displayRoom();
+			}
 		}
 	}
 
