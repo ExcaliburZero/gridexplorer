@@ -23,6 +23,8 @@
  */
 package gridexplorer;
 
+import java.io.FileNotFoundException;
+
 /**
  * Runs the game.
  *
@@ -35,7 +37,7 @@ public class Main {
 	 * 
 	 * @param args The command line arguments
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		// Create a test room
 		//Room testRoom = new Room(10, 10, 5, 5);
 		
@@ -53,8 +55,13 @@ public class Main {
 		// Try to move the player off of the grid
 		//testRoom.movePlayer("down", 4);
 		//testRoom.display();
+		String [] roomList = {
+			"room1",
+			"room2",
+			"special"
+		};
 		
-		Game theGame = new Game();
+		Game theGame = new Game(roomList);
 		theGame.displayRoom();
 		
 		while(theGame.isPlaying()) {

@@ -23,6 +23,7 @@
  */
 package gridexplorer;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -34,15 +35,22 @@ public class Game {
 
 	private Scanner kb = new Scanner(System.in);
 	private String moveDirection;
+	private String[] roomList;
 	private Room curRoom;
 	private boolean playing;
 
 	/**
 	 * The method used to construct a Game object. Creates the first room that
 	 * the game will have.
+	 *
+	 * @param rooms A string array of the rooms used in the game in the order
+	 * they will be used in
+	 * @throws java.io.FileNotFoundException If the first room in the room array
+	 * does not have an existing corresponding file
 	 */
-	public Game() {
-		curRoom = new Room(10, 10, 5, 5);
+	public Game(String[] rooms) throws FileNotFoundException {
+		roomList = rooms;
+		curRoom = new Room(roomList[0]);
 		playing = true;
 	}
 

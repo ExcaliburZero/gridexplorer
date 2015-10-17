@@ -23,6 +23,10 @@
  */
 package gridexplorer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 /**
  * The Room class represents a room within the game.
  *
@@ -57,6 +61,57 @@ public class Room {
 		grid = new int[r][c];
 		spawned = false;
 		spawnPlayer();
+	}
+
+	/**
+	 * The constructor method to create the room based on an input file. It
+	 * takes in the name of the room file without its location and file type, as
+	 * all room files are placed in the "resources/rooms/" directory and are of
+	 * the ".txt" file type.
+	 *
+	 * @param roomName The name of the room file
+	 * @throws java.io.FileNotFoundException If the room name given does not
+	 * have a corresponding existing file
+	 */
+	public Room(String roomName) throws FileNotFoundException {
+		File roomFile = new File("resources/rooms/" + roomName + ".txt");
+		Scanner findSize = new Scanner(roomFile);
+		Scanner rm = new Scanner(roomFile);
+		String line;
+		columns = 0;
+
+		// Find out how many rows and columns the input file has
+		line = findSize.nextLine();
+		rows = line.length();
+		columns++;
+		while (findSize.hasNextLine()) {
+			line = findSize.nextLine();
+			columns++;
+		}
+
+		// Create the grid and fill it with the file contents
+		grid = new int[rows][columns];
+		int i = 0;
+		while (rm.hasNextLine()) {
+			line = rm.nextLine();
+			for (int j = 0; j < line.length(); j++) {
+				// Find player spawn position
+				if (line.charAt(j) == '@') {
+					spawnRow = j;
+					spawnColumn = i;
+				} else {
+					grid[i][j] = identifyChar(line.charAt(j));
+				}
+			}
+			i++;
+		}
+
+		// Check to make sure that there is a spawn position
+		if (spawnRow == -1) {
+			System.out.println("No spawn position in the room file.");
+		} else {
+			spawnPlayer();
+		}
 	}
 
 	/**
