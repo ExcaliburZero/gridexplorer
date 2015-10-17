@@ -37,22 +37,30 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		// Create a test room
-		Room testRoom = new Room(10, 10, 5, 5);
+		//Room testRoom = new Room(10, 10, 5, 5);
 		
 		// Display the size of the test room
-		System.out.println("Rows: " + testRoom.getRows());
-		System.out.println("Columns: " + testRoom.getColumns());
+		//System.out.println("Rows: " + testRoom.getRows());
+		//System.out.println("Columns: " + testRoom.getColumns());
 		
 		// Display the test room
-		testRoom.display();
+		//testRoom.display();
 		
 		// Move the player and then display the test room
 		//testRoom.movePlayer("left", 2);
 		//testRoom.display();
 		
 		// Try to move the player off of the grid
-		testRoom.movePlayer("down", 4);
-		testRoom.display();
+		//testRoom.movePlayer("down", 4);
+		//testRoom.display();
+		
+		Game theGame = new Game();
+		theGame.displayRoom();
+		
+		while(theGame.isPlaying()) {
+			theGame.promptMove();
+			theGame.displayRoom();
+		}
 	}
 
 }

@@ -24,7 +24,7 @@
 package gridexplorer;
 
 /**
- * Handles rooms used by the game.
+ * The Room class represents a room within the game.
  *
  * @author Christopher Wells
  */
@@ -80,7 +80,7 @@ public class Room {
 	/**
 	 * The method used to determine whether a specific position is valid in the
 	 * room or not.
-	 * 
+	 *
 	 * @param r The row of the position
 	 * @param c The column of the position
 	 * @return Whether or not the position is valid
@@ -106,14 +106,13 @@ public class Room {
 	public int objectAt(int r, int c) {
 		if (hasPos(r, c)) {
 			return grid[r][c];
-		}
-		else {
+		} else {
 			return 999;
 		}
 	}
 
 	/**
-	 * The method used to convert and integer identifier into its corresponding
+	 * The method used to convert an integer identifier into its corresponding
 	 * character.
 	 *
 	 * @param indentifier The integer identifier to be converted to a character
@@ -127,8 +126,29 @@ public class Room {
 				return '#';
 			case 2:	// Player
 				return '@';
+			default:
+				return '?';
 		}
-		return '?';
+	}
+
+	/**
+	 * The method used to convert a character into its corresponding integer
+	 * identifier.
+	 *
+	 * @param character The character to be converted into an integer identifier
+	 * @return The integer identifier specified by the character
+	 */
+	private int identifyChar(char character) {
+		switch (character) {
+			case ' ':
+				return 0;
+			case '#':
+				return 1;
+			case '@':
+				return 2;
+			default:
+				return 999;
+		}
 	}
 
 	/**
@@ -155,6 +175,8 @@ public class Room {
 	private void addObject(int r, int c, int id) {
 		if (hasPos(r, c)) {
 			grid[r][c] = id;
+		} else {
+			System.out.println("Invalid position for addObject.");
 		}
 	}
 
@@ -167,6 +189,8 @@ public class Room {
 	private void removeObject(int r, int c) {
 		if (hasPos(r, c)) {
 			grid[r][c] = 0;
+		} else {
+			System.out.println("Invalid position for removeObject.");
 		}
 	}
 
@@ -203,6 +227,8 @@ public class Room {
 			// Remove the object from its old position and add it to its new position
 			removeObject(or, oc);
 			addObject(nr, nc, id);
+		} else {
+			System.out.println("Incorrect position for moveObject.");
 		}
 	}
 
@@ -218,20 +244,84 @@ public class Room {
 		int newColumn = playerColumn;
 
 		// Find the new position of the player based on the direction arguement
-		if (d.equals("up")) {
-			newRow -= a;
-		} else if (d.equals("down")) {
-			newRow += a;
-		} else if (d.equals("left")) {
-			newColumn -= a;
-		} else if (d.equals("right")) {
-			newColumn += a;
+		switch (d) {
+			case "up":
+				newRow -= a;
+				break;
+			case "down":
+				newRow += a;
+				break;
+			case "left":
+				newColumn -= a;
+				break;
+			case "right":
+				newColumn += a;
+				break;
+			default:
+				System.out.println("Invalid direction for movePlayer.");
+				break;
 		}
 
 		// Test to make sure that the new position is empty and that the new
 		// poistion is valid
 		if (objectAt(newRow, newColumn) == 0 && hasPos(newRow, newColumn)) {
 			moveObject(playerRow, playerColumn, newRow, newColumn, 2);
+			playerRow = newRow;
+			playerColumn = newColumn;
+		} else {	// Tell the user why the play could not be moved
+			if (!(hasPos(newRow, newColumn))) {
+				System.out.println("New position " + formatPosition(newRow, newColumn) + " does not exist.");
+			} else if (!(objectAt(newRow, newColumn) == 0)) {
+				System.out.println("New position " + formatPosition(newRow, newColumn) + " is not empty: " + identifyInt(objectAt(newRow, newColumn)));
+			}
 		}
+	}
+
+	/**
+	 * The method used to get the position of the player.
+	 *
+	 * @return The position of the player as an integer array
+	 */
+	public int[] getPlayerPos() {
+		int[] playerPos = new int[2];
+		playerPos[0] = playerRow;
+		playerPos[1] = playerColumn;
+		return playerPos;
+	}
+
+	/**
+	 * The method used to get the spawn position of the room.
+	 *
+	 * @return The spawn position as an integer array
+	 */
+	public int[] getSpawnPos() {
+		int[] spawnPos = new int[2];
+		spawnPos[0] = spawnRow;
+		spawnPos[1] = spawnColumn;
+		return spawnPos;
+	}
+
+	/**
+	 * The method used to format the coordinates of a position for printing.
+	 * Takes in the coordinates as two integers.
+	 *
+	 * @param r The row of the position
+	 * @param c The column of the position
+	 * @return The position expressed as a set of coordinates
+	 */
+	public String formatPosition(int r, int c) {
+		return "(" + r + ", " + c + ")";
+	}
+
+	/**
+	 * The method used to format the coordinates of a position for printing.
+	 * Takes in the coordinates as a two entry integer array.
+	 *
+	 * @param position The row and column of the position as a two entry integer
+	 * array
+	 * @return The position expressed as a set of coordinates
+	 */
+	public String formatPosition(int[] position) {
+		return "(" + position[0] + ", " + position[1] + ")";
 	}
 }
