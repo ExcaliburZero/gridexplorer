@@ -24,7 +24,6 @@
 package gridexplorer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -88,7 +87,7 @@ public class Room {
 			rows = line.length();
 			columns++;
 			while (findSize.hasNextLine()) {
-				line = findSize.nextLine();
+				findSize.nextLine();
 				columns++;
 			}
 
