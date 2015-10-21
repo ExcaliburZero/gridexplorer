@@ -96,6 +96,35 @@ public class RoomTest {
 	}
 
 	/**
+	 * A test which checks the getSpawnPos method of the Room class.
+	 */
+	@Test
+	public void testGetSpawnPos() {
+		String testInfo = "A test for the getSpawnPos method of the Room class";
+		int[] spawnPos = {testSpawnRow, testSpawnColumn};
+		int[] returnedSpawnPos = testRoom.getSpawnPos();
+		assertArrayEquals(testInfo, spawnPos, returnedSpawnPos);
+	}
+
+	/**
+	 * A test which moves the player and checks the getPlayerPos method of the
+	 * Room class.
+	 */
+	@Test
+	public void testGetPlayerPos() {
+		String testInfo = "A test for the getPlayerPos method of the Room class";
+		int[] expectedPlayerPos = {testSpawnRow - 1, testSpawnColumn - 1};
+		testRoom.movePlayer("up", 1);
+		testRoom.movePlayer("left", 1);
+		int[] returnedPlayerPos = testRoom.getPlayerPos();
+		assertArrayEquals(testInfo, expectedPlayerPos, returnedPlayerPos);
+
+		// Reset player to spawn position
+		testRoom.movePlayer("down", 1);
+		testRoom.movePlayer("right", 1);
+	}
+
+	/**
 	 * A test which attempts to display a basic room and checks that the output
 	 * is correct for the given info about the room.
 	 */
@@ -127,5 +156,83 @@ public class RoomTest {
 		int[] testPoints = {1, 2};
 		String returnedString = testRoom.formatPosition(testPoints);
 		assertEquals(testInfo, "(1, 2)", returnedString);
+	}
+
+	/**
+	 * A test which checks the hasPos method of the Room class. It checks the
+	 * output of the method against some certain known points.
+	 */
+	@Test
+	public void testHasPos() {
+		String testInfo = "A test for the hasPos method of Room class";
+		int[][] testPoints = {
+			{0, 0}, // True
+			{-1, 0}, // False
+			{0, -1}, // False
+			{testRows, testColumns}, // False
+			{testRows - 1, testColumns - 1}, // True
+			{testRows, testColumns - 1}, // False
+			{testRows - 1, testColumns}, // False
+			{testRows - 1, 0}, // True
+			{0, testColumns - 1}, // True
+			{testRows, 0}, // False
+			{0, testColumns}, // False
+		};
+		boolean[] expectedResults = {
+			true, // (0, 0)
+			false, // (-1, 0)
+			false, // (0, -1)
+			false, // (testRows, testColumns)
+			true, // (testRows - 1, testColumns - 1)
+			false, // (testRows, testColumns - 1)
+			false, // (testRows - 1, testColumns)
+			true, // (testRows - 1, 0)
+			true, // (0, testColumns - 1)
+			false, // (testRows, 0)
+			false, // (0, testColumns)
+		};
+		for (int i = 0; i < testPoints.length; i++) {
+			boolean returnedOutcome = testRoom.hasPos(testPoints[i][0], testPoints[i][1]);
+			assertTrue(testInfo, expectedResults[i] == returnedOutcome);
+		}
+	}
+
+	/**
+	 * A test which checks the objectAt method of the Room class using several
+	 * points with know objects at them.
+	 */
+	@Test
+	public void testObjectAt() {
+		String testInfo = "A test for the objectAt method of Room class";
+		int[][] testPositions = {
+			{0, 0}, // Empty
+			{testSpawnRow, testSpawnColumn}, // Player position
+			{-1, -1}, // Non-existant position
+		};
+		int[] expectedResults = {
+			0, // (0, 0)
+			2, // (testSpawnRow, testSpawnColumn)
+			999, // (-1, -1)
+		};
+		for (int i = 0; i < testPositions.length; i++) {
+			int returnedIdentifier = testRoom.objectAt(testPositions[i][0], testPositions[i][1]);
+			assertEquals(testInfo, expectedResults[i], returnedIdentifier);
+		}
+	}
+
+	/**
+	 * A test which checks the spawnPlayer method of the Room class. It works by
+	 * moving the player from the spawn position, spawning the player, and then
+	 * checking to make sure that the player is back at the spawn point.
+	 */
+	@Test
+	public void testSpawnPlayer() {
+		String testInfo = "A test for the spawnPlayer method of the Room class";
+		int[] expectedPlayerPos = {testSpawnRow, testSpawnColumn};
+		testRoom.movePlayer("up", 1);
+		testRoom.movePlayer("left", 1);
+		testRoom.spawnPlayer();
+		int[] returnedPlayerPos = testRoom.getPlayerPos();
+		assertArrayEquals(testInfo, expectedPlayerPos, returnedPlayerPos);
 	}
 }
