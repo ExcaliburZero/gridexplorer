@@ -48,17 +48,6 @@ public class RoomTest {
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
-	public RoomTest() {
-	}
-
-	@BeforeClass
-	public static void setUpClass() {
-	}
-
-	@AfterClass
-	public static void tearDownClass() {
-	}
-
 	@Before
 	public void setUp() {
 		// Setup output streams
@@ -126,10 +115,6 @@ public class RoomTest {
 		testRoom.movePlayer("left", 1);
 		int[] returnedPlayerPos = testRoom.getPlayerPos();
 		assertArrayEquals(testInfo, expectedPlayerPos, returnedPlayerPos);
-
-		// Reset player to spawn position
-		testRoom.movePlayer("down", 1);
-		testRoom.movePlayer("right", 1);
 	}
 
 	/**
