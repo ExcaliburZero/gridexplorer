@@ -323,7 +323,7 @@ public class Room {
 				break;
 			default:
 				System.out.println("Invalid direction for movePlayer.");
-				break;
+				return;	// Do not attempt to move player, as their position did not change
 		}
 
 		// Test to make sure that the new position is empty and that the new

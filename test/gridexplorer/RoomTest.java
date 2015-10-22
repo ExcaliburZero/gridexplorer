@@ -26,9 +26,7 @@ package gridexplorer;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -239,5 +237,54 @@ public class RoomTest {
 		testRoom.spawnPlayer();
 		int[] returnedPlayerPos = testRoom.getPlayerPos();
 		assertArrayEquals(testInfo, expectedPlayerPos, returnedPlayerPos);
+	}
+
+	/**
+	 * A test which checks the movePlayer method of the Room class. It attempts
+	 * to move the player in all possible move directions, and then makes sure
+	 * that the player properly returns to the spawn position.
+	 */
+	@Test
+	public void testMovePlayer() {
+		String testInfo = "A test of the movePlayer method of the Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
+		int[] expectedPlayerPos = {testSpawnRow, testSpawnColumn};
+		testRoom.movePlayer("up", 1);
+		testRoom.movePlayer("left", 1);
+		testRoom.movePlayer("down", 1);
+		testRoom.movePlayer("right", 1);
+		int[] returnedPlayerPos = testRoom.getPlayerPos();
+		assertArrayEquals(testInfo, expectedPlayerPos, returnedPlayerPos);
+	}
+
+	/**
+	 * A test which checks that the movePlayer method of the Room class properly
+	 * handles invalid direction name input.
+	 */
+	@Test
+	public void testMovePlayerInvaid() {
+		String testInfo = "A test of an invalid direction being given to the movePlayer method of the Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
+		String expectedOutput = "Invalid direction for movePlayer.\n";
+		testRoom.movePlayer("weast", 1);
+		String returnedOutput = outContent.toString();
+		assertEquals(testInfo, expectedOutput, returnedOutput);
+	}
+
+	/**
+	 * A test which checks that the file-based constructor of the Room class
+	 * properly handles invalid room filenames.
+	 */
+	@Test
+	public void testConstructorNoFile() {
+		String testInfo = "A test of a non-existing file being given to the file-based constructor of the Room class";
+		String nonExistantRoom = "NonExistantRoom";
+		testGame = new Game(testRooms);
+		testRoom = new Room(nonExistantRoom, testGame);
+		String expectedOutput = "Invalid room file '" + nonExistantRoom + "'\n";
+		String returnedOutput = outContent.toString();
+		assertEquals(testInfo, expectedOutput, returnedOutput);
 	}
 }
