@@ -39,12 +39,12 @@ import static org.junit.Assert.*;
 public class RoomTest {
 
 	private String[] testRooms = {"room1"};
-	private Game testGame = new Game(testRooms);
+	private Game testGame;
 	private int testRows = 4;
 	private int testColumns = 5;
 	private int testSpawnRow = 3;
 	private int testSpawnColumn = 2;
-	private Room testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
+	private Room testRoom;
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 	private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
@@ -80,6 +80,8 @@ public class RoomTest {
 	@Test
 	public void testGetColumns() {
 		String testInfo = "A test for the getColumns method of Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		int columns = testRoom.getColumns();
 		assertEquals(testInfo, testColumns, columns);
 	}
@@ -91,6 +93,8 @@ public class RoomTest {
 	@Test
 	public void testGetRows() {
 		String testInfo = "A test for the getRows method of Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		int rows = testRoom.getRows();
 		assertEquals(testInfo, testRows, rows);
 	}
@@ -101,6 +105,8 @@ public class RoomTest {
 	@Test
 	public void testGetSpawnPos() {
 		String testInfo = "A test for the getSpawnPos method of the Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		int[] spawnPos = {testSpawnRow, testSpawnColumn};
 		int[] returnedSpawnPos = testRoom.getSpawnPos();
 		assertArrayEquals(testInfo, spawnPos, returnedSpawnPos);
@@ -113,6 +119,8 @@ public class RoomTest {
 	@Test
 	public void testGetPlayerPos() {
 		String testInfo = "A test for the getPlayerPos method of the Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		int[] expectedPlayerPos = {testSpawnRow - 1, testSpawnColumn - 1};
 		testRoom.movePlayer("up", 1);
 		testRoom.movePlayer("left", 1);
@@ -131,6 +139,8 @@ public class RoomTest {
 	@Test
 	public void testDisplay() {
 		String testInfo = "A test for the creation and display of a basic room";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		testRoom.display();
 		assertEquals(testInfo, "     \n     \n     \n  @  \n", outContent.toString());
 	}
@@ -142,6 +152,8 @@ public class RoomTest {
 	@Test
 	public void testFormatPositionInts() {
 		String testInfo = "A test for the formatPosition method of Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		String returnedString = testRoom.formatPosition(1, 2);
 		assertEquals(testInfo, "(1, 2)", returnedString);
 	}
@@ -153,6 +165,8 @@ public class RoomTest {
 	@Test
 	public void testFormatPositionIntArray() {
 		String testInfo = "A test for the formatPosition method of Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		int[] testPoints = {1, 2};
 		String returnedString = testRoom.formatPosition(testPoints);
 		assertEquals(testInfo, "(1, 2)", returnedString);
@@ -165,6 +179,8 @@ public class RoomTest {
 	@Test
 	public void testHasPos() {
 		String testInfo = "A test for the hasPos method of Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		int[][] testPoints = {
 			{0, 0}, // True
 			{-1, 0}, // False
@@ -204,6 +220,8 @@ public class RoomTest {
 	@Test
 	public void testObjectAt() {
 		String testInfo = "A test for the objectAt method of Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		int[][] testPositions = {
 			{0, 0}, // Empty
 			{testSpawnRow, testSpawnColumn}, // Player position
@@ -228,6 +246,8 @@ public class RoomTest {
 	@Test
 	public void testSpawnPlayer() {
 		String testInfo = "A test for the spawnPlayer method of the Room class";
+		testGame = new Game(testRooms);
+		testRoom = new Room(testRows, testColumns, testSpawnRow, testSpawnColumn, testGame);
 		int[] expectedPlayerPos = {testSpawnRow, testSpawnColumn};
 		testRoom.movePlayer("up", 1);
 		testRoom.movePlayer("left", 1);
